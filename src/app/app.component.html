@@ -10,7 +10,11 @@
     <h3>Home</h3>
 
       <ul class="list-group">
-        <li class="list-group-item">Home</li>
+        <li class="list-group-item"
+          routerLink=""
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Home</li>
       </ul>
 
       <hr>
@@ -34,7 +38,10 @@
       <h3>Productos</h3>
       <hr>
         <ul class="list-group">
-          <li class="list-group-item">Productos</li>
+          <li 
+            routerLink="products/products-list"
+            routerLinkActive="active"
+            class="list-group-item">Productos</li>
         </ul>
 
   </div>
