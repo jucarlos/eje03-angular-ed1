@@ -1,1 +1,44 @@
-<p>list-products works!</p>
+<h3>Listado de productos</h3>
+<hr>
+
+
+<!-- Si isLoading -->
+@if( isLoading ) {
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only"></span>
+    </div>
+}
+
+@if ( productos ) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Opciones</th>
+              </tr>
+        </thead>
+    
+        <tbody>
+    
+            
+            <tr *ngFor="let producto of productos; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ producto.title }}</td>
+                <td>{{ producto.price }}</td>
+                <td>
+
+                    <!-- detail-product/:id -->
+
+                    <a class="btn btn-success btn-sm"
+                        [routerLink]=" ['/products/detail-product', producto.slug ]     "
+                        >Ver</a>
+                </td>
+            </tr>
+    
+        </tbody>
+    </table>
+}
+
+
