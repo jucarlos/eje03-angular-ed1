@@ -11,7 +11,7 @@ import { Product } from '../../interfaces/product-interface';
 export class ListProductsComponent implements OnInit {
 
 
-  private productsService = inject( ProductsService )
+  private productsService = inject( ProductsService );
   
   public productos: Product[] = [];
   public isLoading: boolean = false;
@@ -21,7 +21,8 @@ export class ListProductsComponent implements OnInit {
   ngOnInit(): void {
 
     this.isLoading = true;
-    this.productsService.getProducts().subscribe ( resp => {
+    this.productsService.getProducts()
+    .subscribe ( resp => {
 
       this.productos = resp.products;
       this.isLoading = false;
