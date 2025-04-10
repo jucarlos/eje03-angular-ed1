@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../interfaces/product-interface';
+import { ProductsService } from '../../services/products.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-details-product',
@@ -11,8 +13,15 @@ import { Product } from '../../interfaces/product-interface';
 export class DetailsProductComponent implements OnInit {
 
   private activatedRoute = inject( ActivatedRoute );
+  private productsService = inject( ProductsService );
 
   public product: Product | null = null ;
+
+  public isLoading: boolean = false;
+
+  public getImagenUrl(): string {
+    return `${environment.baseUrl}/api/files/product/${this.product?.images[0]}`
+  }
 
 
   ngOnInit(): void {
@@ -21,13 +30,16 @@ export class DetailsProductComponent implements OnInit {
     //   console.log( resp['id'] )
     // });
 
+    this.isLoading = true;
     const slug = this.activatedRoute.snapshot.params['id'];
+    
+    this.productsService.getProductById(slug).subscribe ( resp => {
+      console.log( resp );
+      this.product = resp;
+      this.isLoading = false;
+
+    })
   
-    /// Llamar al servicio e imprimir en la consola los datos de este producto.
-    // Tarea. 2 cosas. 1. incluir el servicio y luego llamarle.
-
-    ////////////////
-
   
   }
 

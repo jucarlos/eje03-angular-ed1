@@ -1,1 +1,30 @@
-<p>details-product works!</p>
+
+
+<h3>Datos del producto seleccionado</h3>
+
+@if( isLoading ) {
+    <shared-spinner></shared-spinner>
+}
+
+@if ( product ) {
+
+  <div class="card mt-3" style="width: 28rem;">
+    <img class="card-img-top" 
+      [src]="getImagenUrl()" alt="Card image cap">
+   
+    <div class="card-body">
+      <h5 class="card-title">{{ product.title }}</h5>
+      <p class="card-text">{{ product.description }}</p>
+      <p class="card-text">{{ product.price | currency }}</p>
+    
+    </div>
+  </div>
+  
+} 
+
+@if ( !product && !isLoading) {
+  <shared-alert [mensaje]="'No existe producto '"></shared-alert>
+}
+
+
+
