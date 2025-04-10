@@ -18,11 +18,13 @@ export class AuthService {
   // Los servicios son singleton. 
   private authStatus: AuthStatus = 'not-authenticated';
   private user: User | null = null;
-  private token: string = '';
+  private token: string = localStorage.getItem('token') || '';
 
   private http = inject( HttpClient );
 
-  constructor() { }
+  constructor() {
+    this.checkStatus().subscribe();
+  }
 
 
   public getAuthStatus(): AuthStatus {
@@ -51,8 +53,43 @@ export class AuthService {
     this.user = null;
     this.authStatus = 'not-authenticated';
     this.token = '';
+    localStorage.removeItem('token');
   }
 
+
+  public checkStatus(): Observable<boolean> {
+
+    this.authStatus = 'checking';
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.logout();
+      return of ( false );
+    }
+
+
+    return this.http.get<AuthResponse>(`${baseUrl}/api/auth/check-status`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .pipe (
+
+      tap( resp => {
+        return this.authenticationSuccess( resp );
+       }),
+
+       map( () => true ),
+
+       catchError( error => {
+        this.logout();
+        return of ( false );
+       })
+
+
+    )
+
+
+  }
 
 
   public login( email: string, password: string ): Observable<boolean> {
@@ -64,28 +101,31 @@ export class AuthService {
     .pipe(
 
       tap( resp => {
-        this.authStatus = 'authenticated';
-        this.user = resp.user;
-        this.token = resp.token;
-
-        
+       return this.authenticationSuccess( resp );
       }),
 
       map( ( ) => true  ),
 
       catchError ( error => {
 
-        this.authStatus = 'not-authenticated';
-        this.token = '';
-        this.user = null;
+        this.logout();
         return of( false );
       })
 
     )
 
+  }
 
 
+  private authenticationSuccess( resp: AuthResponse ): Observable<boolean> {
 
+    this.authStatus = 'authenticated';
+    this.user = resp.user;
+    this.token = resp.token;
+
+    localStorage.setItem('token', this.token);
+    return of ( true );
+    
   }
 
 
