@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -18,6 +20,8 @@ export class LoginPageComponent {
   // 4. Mapear la configuración del componente de ts al html.
 
   private fb = inject( FormBuilder );
+  private authService = inject( AuthService );
+  private router = inject( Router );
 
   public isPosting: boolean = false;
   public hasError: boolean = false;
@@ -37,6 +41,8 @@ export class LoginPageComponent {
 
   onSubmit(): void {
 
+    if ( this.isPosting ) return;
+
     if ( this.miFormLogin.invalid ) {
 
       this.hasError = true;
@@ -47,12 +53,31 @@ export class LoginPageComponent {
     this.mensajeError = '';
     this.hasError = false;
 
-    console.log('El formulario es correcto: ', this.miFormLogin.value );
+    // console.log('El formulario es correcto: ', this.miFormLogin.value );
 
+    const { email = '', password= ''} = this.miFormLogin.value;
     // llamar al servicio de login y ver si devuelve algo.
 
+    this.isPosting = true;
+  
+    this.authService.login( email!, password! ).subscribe( isAuthenticated => {
+
+      console.log( isAuthenticated );
+
+      this.isPosting = false;
+
+      if ( !isAuthenticated ) {
+        this.mensajeError = 'No estás autorizado';
+        this.hasError = true;
+        return;
+      }
+
+      this.router.navigateByUrl('/');
 
 
+
+
+    });
 
 
 

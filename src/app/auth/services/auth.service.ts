@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { User } from '../interfaces/user.interfac';
 import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable, of, tap } from 'rxjs';
+import { AuthResponse } from '../interfaces/login-response.interface';
 
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
@@ -16,6 +18,7 @@ export class AuthService {
   // Los servicios son singleton. 
   private authStatus: AuthStatus = 'checking';
   private user: User | null = null;
+  private token: string = '';
 
   private http = inject( HttpClient );
 
@@ -34,12 +37,32 @@ export class AuthService {
   }
 
 
-  public login( email: string, password: string ) {
+  public login( email: string, password: string ): Observable<boolean> {
 
-    return this.http.post(`${baseUrl}/api/auth/login`, {
+    return this.http.post<AuthResponse>(`${baseUrl}/api/auth/login`, {
       email: email,
       password: password,
-    }   )
+    })
+    .pipe(
+
+      tap( resp => {
+        this.authStatus = 'authenticated';
+        this.user = resp.user;
+        this.token = resp.token;
+
+        
+      }),
+
+      map( ( ) => true  ),
+
+      catchError ( error => {
+
+        return of( false );
+      })
+
+    )
+
+
 
 
   }
