@@ -18,7 +18,20 @@ Opciones de la aplicación:
         - Usaremos autenticación con JWT , que tiene una duración de 2 horas.
         cada vez que iniciemos la aplicacion el servidor nos dirá si el token es correcto.
 
-        
+        - Siguientes pasos.
+            - Crear un guard.
+            - Crear un interceptor.
+
+            os voy a dejar el formulario de registro y el servicio.
+
+            - fin del ejercicion -
+
+
+
+            Aplicacion novedades.
+
+            Examen. ( esta tarde )
+
 
 
     - products
