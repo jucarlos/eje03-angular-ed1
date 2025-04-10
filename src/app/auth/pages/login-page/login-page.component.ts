@@ -75,8 +75,6 @@ export class LoginPageComponent {
       this.router.navigateByUrl('/');
 
 
-
-
     });
 
 

@@ -16,7 +16,7 @@ const baseUrl = environment.baseUrl;
 export class AuthService {
 
   // Los servicios son singleton. 
-  private authStatus: AuthStatus = 'checking';
+  private authStatus: AuthStatus = 'not-authenticated';
   private user: User | null = null;
   private token: string = '';
 
@@ -25,16 +25,34 @@ export class AuthService {
   constructor() { }
 
 
-  public getAuthStatus(): string {
+  public getAuthStatus(): AuthStatus {
 
-    return this.authStatus;
+    if ( this.authStatus === 'checking') {
+      return 'checking'
+    }
+    if ( this.user ) {
+      return 'authenticated'
+    }
+
+    return 'not-authenticated';
 
   }
 
   public getUser(): User | null {
-
     return this.user;
   }
+
+  public getToken(): string {
+    return this.token;
+  }
+
+
+  public logout(): void {
+    this.user = null;
+    this.authStatus = 'not-authenticated';
+    this.token = '';
+  }
+
 
 
   public login( email: string, password: string ): Observable<boolean> {
@@ -57,6 +75,9 @@ export class AuthService {
 
       catchError ( error => {
 
+        this.authStatus = 'not-authenticated';
+        this.token = '';
+        this.user = null;
         return of( false );
       })
 
