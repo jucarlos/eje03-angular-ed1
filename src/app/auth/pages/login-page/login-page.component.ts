@@ -19,6 +19,11 @@ export class LoginPageComponent {
 
   private fb = inject( FormBuilder );
 
+  public isPosting: boolean = false;
+  public hasError: boolean = false;
+  public mensajeError: string = '';
+
+
 
 
   public miFormLogin = this.fb.group({
@@ -26,7 +31,33 @@ export class LoginPageComponent {
     email: [ '',  [Validators.required, Validators.email ]   ,   ],
     password: [  '', [ Validators.required, Validators.minLength(6)],    ],
 
-  });
+  }, );
+
+
+
+  onSubmit(): void {
+
+    if ( this.miFormLogin.invalid ) {
+
+      this.hasError = true;
+      this.mensajeError = 'El formulario es inválido';
+      return;
+    }
+
+    this.mensajeError = '';
+    this.hasError = false;
+
+    console.log('El formulario es correcto: ', this.miFormLogin.value );
+
+    // llamar al servicio de login y ver si devuelve algo.
+
+
+
+
+
+
+
+  }
 
 
 

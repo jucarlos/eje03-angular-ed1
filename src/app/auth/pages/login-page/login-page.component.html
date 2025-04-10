@@ -10,12 +10,15 @@
                 </a>
               </div>
               <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Haz login en tu cuenta</h2>
-              <form [formGroup]="miFormLogin">
+              <form [formGroup]="miFormLogin"  (ngSubmit)="onSubmit()">
                 <div class="row gy-2 overflow-hidden">
                   <div class="col-12">
                                         
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                      <input 
+                        formControlName = "email"
+                        name="email"
+                        type="email" class="form-control" id="email" placeholder="name@example.com" required>
                       <label for="email" class="form-label">Email</label>
                     </div>
  
@@ -25,12 +28,24 @@
  
  
                     <div class="form-floating mb-3">
-                      <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
+                      <input 
+                        formControlName="password"
+                        name="password"
+                        type="password" class="form-control"  
+                        id="password" value="" placeholder="Password" required>
                       <label for="password" class="form-label">Password</label>
                     </div>
  
                     
                   </div>
+
+
+                <!-- error  -->
+                  @if ( hasError ) {
+                    <shared-alert [mensaje]="mensajeError"></shared-alert>                
+                  }
+           
+
                
                   <div class="col-12">
                     <div class="d-grid my-3">
