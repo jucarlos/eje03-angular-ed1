@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -16,8 +17,18 @@ export class LoginPageComponent {
   // 3. Definir en el componente de ts el formulario ( nombre, apellidos, email, edad ) y validaciones
   // 4. Mapear la configuración del componente de ts al html.
 
+  private fb = inject( FormBuilder );
 
-  
+
+
+  public miFormLogin = this.fb.group({
+
+    email: [ '',  [Validators.required, Validators.email ]   ,   ],
+    password: [  '', [ Validators.required, Validators.minLength(6)],    ],
+
+  });
+
+
 
 
 
