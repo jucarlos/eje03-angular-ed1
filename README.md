@@ -52,4 +52,8 @@ Opciones de la aplicación:
 
     node ./scripts/set.envs.js
 
-    
+    Para poner en  producción.
+
+    1. Generar environment con node ./scripts/set.envs.js ( si están en el contenedor )
+    2. Generar el build de producción ng build.
+
