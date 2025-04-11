@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
 import {  CanMatchFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 
-export const notAuthenticatedGuard: CanMatchFn = (route, segments) => {
+export const notAuthenticatedGuard: CanMatchFn = async (route, segments) => {
 
 
   console.log('Pasando por guard');
@@ -11,8 +12,8 @@ export const notAuthenticatedGuard: CanMatchFn = (route, segments) => {
   const authService = inject( AuthService );
   const router = inject( Router );
 
-  const isAuthenticated = authService.checkStatus();
-  // TODO cambiar la entrada de este observable.
+  const isAuthenticated = await firstValueFrom(authService.checkStatus() );
+  
 
   if ( isAuthenticated ) {
     router.navigateByUrl('/')

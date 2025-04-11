@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.interfac';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AuthResponse } from '../interfaces/login-response.interface';
+import { UserDto } from '../interfaces/userdto.interface';
 
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
@@ -84,11 +85,7 @@ export class AuthService {
         this.logout();
         return of ( false );
        })
-
-
     )
-
-
   }
 
 
@@ -117,6 +114,27 @@ export class AuthService {
   }
 
 
+  register( userDto: UserDto ): Observable<boolean> {
+
+    this.authStatus = 'checking';
+
+    return this.http.post<AuthResponse>(`${baseUrl}/api/auth/register` 
+      ,  userDto )
+    .pipe(
+      tap( resp => {    /// si todo va bien
+        this.authenticationSuccess( resp );
+      }),
+      map( () => true ),
+      catchError( ( error: any ) => {
+        // this.logout();
+        // return of ( false );
+        return this.authenticationError( error );
+      })
+    )
+  }
+
+
+
   private authenticationSuccess( resp: AuthResponse ): Observable<boolean> {
 
     this.authStatus = 'authenticated';
@@ -127,6 +145,12 @@ export class AuthService {
     return of ( true );
     
   }
+
+  private authenticationError ( error : any ): Observable<boolean> {
+    this.logout();
+    return of(false);
+  }
+
 
 
 
