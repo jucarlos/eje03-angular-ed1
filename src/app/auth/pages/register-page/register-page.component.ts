@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UserDto } from '../../interfaces/userdto.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorService } from '../../../shared/services/validator.service';
@@ -15,6 +15,7 @@ export class RegisterPageComponent {
 
 
   private fb = inject(FormBuilder);
+  
   private validatorsService = inject(ValidatorService); 
   private authService = inject( AuthService );
   private router = inject(Router);
@@ -25,9 +26,12 @@ export class RegisterPageComponent {
 
 
   public myForm: FormGroup = this.fb.group({
-    name: ['', [ Validators.required,  ]],
+    name: ['', [ Validators.required]],
     // email: ['', [ Validators.required, Validators.pattern( this.validatorsService.emailPattern )], [ new EmailValidator() ]],
-    email: ['', [ Validators.required, Validators.pattern( this.validatorsService.emailPattern )], [  ]],
+    email: ['', [ 
+      Validators.required, 
+      Validators.pattern( this.validatorsService.emailPattern )
+    ], [  ]],
     password: ['', [ Validators.required, Validators.minLength(6) ]],
     password2: ['', [ Validators.required ]],
   }, {
@@ -46,7 +50,11 @@ export class RegisterPageComponent {
   }
 
   onSubmit() {
+    // Abc123
+    
+
     this.myForm.markAllAsTouched();
+
     this.mensajeError = '';
 
     if ( this.enviandoFormulario === true || this.myForm.invalid ) return;
@@ -57,10 +65,12 @@ export class RegisterPageComponent {
       email: this.myForm.controls['email'].value,
       fullName: this.myForm.controls['name'].value,
       password: this.myForm.controls['password'].value,
+
     }
 
 
     console.log( newUser );
+
     this.authService.register( newUser ).subscribe( resp => {
 
       console.log( resp ); 

@@ -20,17 +20,29 @@ Opciones de la aplicación:
 
         - Siguientes pasos.
             - Crear un guard.
-            - Crear un interceptor.
+            
+            - Está el registro
 
-            os voy a dejar el formulario de registro y el servicio.
+            Hoy.
 
-            - fin del ejercicion -
+            - Hablamos del formulario de  registro que ya está.
+
+
+            - Haremos un interceptor.
+
+            - generar variables el fichero environment desde las variables de entorno del si.o.
+
+            - Novedades angular.
+
+            - cuestionario.
 
 
 
-            Aplicacion novedades.
 
-            Examen. ( esta tarde )
+
+
+
+
 
 
 
