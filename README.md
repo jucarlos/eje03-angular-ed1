@@ -37,15 +37,6 @@ Opciones de la aplicación:
             - cuestionario.
 
 
-
-
-
-
-
-
-
-
-
     - products
         - servicios,
         - páginas ( lista de productos, detalle de un producto )
@@ -55,3 +46,10 @@ Opciones de la aplicación:
 
     Url del backend: https://nest-curso-angular-2025.onrender.com/api#/
 
+    Hay que generar un fichero llamado .env con las va. entorno que están en template.
+
+    Para generar ficheros environment desde las variables de entorno .env o del contenedor.
+
+    node ./scripts/set.envs.js
+
+    
